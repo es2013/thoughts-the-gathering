@@ -12,14 +12,21 @@ AS A social media startup I WANT an API for my social network that uses a NoSQL 
 
 * [Technology Used](#technology-used)
 * [Usage](#usage)
+* [Models](#models)
 * [License](#License)
 * [Walk-through](#walk-through)
 
 ## Technology Used
-- MongoDB
+- Mongoose
 - Express.js
+- Node.js
 
 ## Usage
+
+## Models
+- User
+- Thought
+- Reaction
 
 ## License
 
