@@ -43,7 +43,7 @@ const userController = {
         })
     },
     //update user by id
-    UpdateUser({ params, body}, res ){
+    updateUser({ params, body}, res ){
         User.findOneAndUpdate({_id: params.id}, body, { new: true, })
         .then(dbUserData => {
             if (!dbUserData) {
@@ -78,12 +78,46 @@ const userController = {
             .catch(err => res.status(400).json(err));
         })
         .catch(err => res.status(400).json(err));   
-    }
+    },
 
     // Bonus: add a new friend to a users friends list
-
+    addFriend({params}, res) {
+        User.findOneAndUpdate({_id: params.userId}, {$addToSet: {friends: params.friendId}}, {new: true})
+        .then(dbUserData => {
+            if(!dbUserData){
+                res.status(400).json({message: 'this user does not exist'})
+                return;
+            }
+            //if it does exist update
+            User.findOneAndUpdate({_id: params.friendId}, {$addToSet: {friends: params.friendId}}, {new: true})
+            .then(dbFriendData => {
+                if (!dbFriendData){
+                    res.status(400).json({message:'this friendID does not exist'})
+                    return
+                }
+                res.json(dbUserData)
+            })
+            .catch(err =>{
+                res.json(err);
+            })
+            .catch(err => res.json(err));
+        })
+    },
      // Bonus: delete a new friend to a users friends list
-
+     deleteFriend({ params }, res ){
+         User.findOneAndUpdate({_id:params.userId}, {$pull: {friends:params.friendId}}, {new:true})
+         .then(dbFriendData => {
+             if(!dbFriendData) {
+                 res.status(400).json({message: 'this friendId does not exist'})
+                 return;
+             }
+             res.json({message: 'Goodbye friend! This friend has been deleted'})
+         })
+         .catch(err => {
+             res.json(err)
+         })
+         .catch(err => {res.json(err)})
+     }
 }
 
 module.exports = userController;

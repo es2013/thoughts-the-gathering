@@ -95,7 +95,7 @@ const thoughtController = {
   // add new thought reaction
   addReaction({ params, body }, res) {
     Thought.findOneAndUpdate(
-      { _id: params.thoughtid },
+      { _id: params.thoughtId },
       { $addToSet: { reactions: body } },
       { new: true }
     )
@@ -128,6 +128,6 @@ const thoughtController = {
         res.status(400).json(err);
       });
   },
-}
+};
 
 module.exports = thoughtController;
