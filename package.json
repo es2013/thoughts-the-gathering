@@ -6,10 +6,11 @@
         "start": "node server.js"
     },
     "keywords": [],
-    "author": "",
+    "author": "erika salcedo",
     "license": "ISC",
     "dependencies": {
         "express": "^4.17.1",
-        "mongoose": "^5.9.7"
+        "mongoose": "^5.12.4",
+        "node": "^15.14.0"
     }
 }

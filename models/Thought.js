@@ -1,40 +1,70 @@
-const { Schema, model } = require('mongoose');
-const reactionSchema = require('./Reaction');
-//will need to create a date format js file 
-//const dateFormat = //require('../utils/dateFormat');
+const { Schema, model, Types } = require("mongoose");
+//will need to create a date format js file
+const dateFormat = require("../utils/dateFormat");
 
-const thoughtSchema = new Schema (
-    {
-        thoughtText:{
-            type:String,
-            required: true,
-            minLength:1,
-            maxLength:280
-        },
-        createdAt:{
-            type:Date,
-            default: Date.now,
-            get: createdAtVal => dateFormat(createdAtVal)
-        },
-        username:{
-            type: String,
-            required:true
-        },
-        reaction: [reactionSchema]
+const ReactionSchema = new Schema(
+  {
+    reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId()
     },
-    {
-        toJSON:{
-            virtuals:true,
-            getters:true
-        },
-        id:false
+    reactionBody: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 1,
+      maxlength: 280
+    },
+    username: {
+      type: String,
+      required: true
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (createdAtVal) => dateFormat(createdAtVal)
     }
- );
-//virtual called reactionCount that retrieves the length of array
-thoughtSchema.virtual('reactionCount').get(function() {
-    return this.reactions.length;
-});
+  },
+  {
+    toJSON: {
+      getters: true
+    }
+  }
+);
 
-const Thought = model('Thought', thoughtSchema);
+const ThoughtSchema = new Schema(
+  {
+    thoughtText: {
+      type: String,
+      required: true,
+      minLength: 1,
+      maxLength: 280
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (createdAtVal) => dateFormat(createdAtVal)
+    },
+    username: {
+      type: String,
+      required: true,
+      ref: "User"
+    },
+    reactions: [ ReactionSchema ]
+  },
+  {
+    toJSON: {
+      virtuals: true,
+      getters: true
+    },
+    id: false
+  }
+);
+const Thought = model("Thought", ThoughtSchema);
+
+//virtual called reactionCount that retrieves the length of array
+ThoughtSchema.virtual("reactionCount").get(function () {
+  return this.reactions.length;
+});
 
 module.exports = Thought;

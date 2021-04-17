@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const dateFormat = require("../utils/dateFormat");
 
 const UserSchema = new Schema(
   {
@@ -12,23 +13,28 @@ const UserSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      match: [/.+@.+\..+/, "Please enter a valid email address!"],
+      match: [/.+@.+\..+/, "Please enter a valid email address!"]
     },
-    thoughts: [{
+    thoughts: [
+      {
         type: Schema.Types.ObjectId,
-        ref: "Thought",
-      }],
-    friends: [{
+        ref: "Thought"
+      },
+    ],
+    friends: [
+      {
         type: Schema.Types.ObjectId,
-        ref: "User",
-      }],
+        ref: "User"
+      },
+    ],
   },
   {
     toJSON: {
       virtuals: true,
+      getters: true
     },
     // prevents virtuals from creating duplicate of _id as `id`
-    id: false,
+    id: false
   }
 );
 // get total count of friends
