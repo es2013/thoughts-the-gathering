@@ -15,11 +15,11 @@ router
 
 router.route('/:id')
     .get(getUserById)
-    .put(updateUser)
+    // .put(updateUser)
     .delete(deleteUser)
 
 router.route('/:userId/friends/:friendId')
-    .post(addFriend)
-    .delete(deleteFriend)
+    // .post(addFriend) BONUS
+    // .delete(deleteFriend) BONUS
 
 module.exports = router;

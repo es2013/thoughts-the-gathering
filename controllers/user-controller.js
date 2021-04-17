@@ -84,5 +84,6 @@ const userController = {
 
      // Bonus: delete a new friend to a users friends list
 
-  
 }
+
+module.exports = userController;
