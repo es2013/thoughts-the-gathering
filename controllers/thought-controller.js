@@ -5,7 +5,7 @@ const thoughtController = {
   //get all thoughts
   getAllThoughts(req, res) {
     Thought.find({})
-      .populate({ path: "users", select: "-__v" })
+      .populate({ path: "reactions", select: "-__v" })
       .select("-__v")
       .then((dbThoughtData) => res.json(dbThoughtData))
       .catch((err) => {
@@ -16,7 +16,7 @@ const thoughtController = {
   //get single thought by id
   getThoughtById({ params }, res) {
     Thought.findOne({ _id: params.id })
-      .populate({ path: "users", select: "-__v" })
+      .populate({ path: "reactions", select: "-__v" })
       .select("-__v")
       .then((dbThoughtData) => {
         if (!dbThoughtData) {
@@ -58,8 +58,8 @@ const thoughtController = {
 
   //update thought by id
   updateThought({ params, body }, res) {
-    Thought.findOneAndUpdate({ _id: params.id }, body, { new: true }),
-      then((dbThoughtData) => {
+    Thought.findOneAndUpdate({ _id: params.id }, body, { new: true })
+      .then((dbThoughtData) => {
         if (!dbThoughtData) {
           res.status(400).json({ message: "Thought ID does not exist" });
           return;
@@ -71,8 +71,8 @@ const thoughtController = {
   },
   // delete thought by id
   deleteThought({ params }, res) {
-    Thought.findOneAndUpdate({ _id: params.id })
-      .then((dbThoughtData) => {
+    Thought.findOneAndDelete({ _id: params.id })
+      .then(dbThoughtData => {
         if (!dbThoughtData) {
           res.status(400).json({ message: "Thought ID does not exist" });
           return;
